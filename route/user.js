@@ -6,7 +6,7 @@ const { user } = require('./../models');
 const { tokenVerificationMiddleware } = require('./../middleware');
 
 router.post("/register", async (req,res) => {
-    const { username, password } = req.body;
+    const { username, password, check_password } = req.body;
 
     const exist = await user.findOne({
         where: {
@@ -16,6 +16,10 @@ router.post("/register", async (req,res) => {
 
     if(exist){
         return res.status(400).json({ massage: "this username already exist!!!"});
+    }
+
+    if(password != confirm_password){
+        return res.status(400).json({ massage: "password is not the same!!!"});
     }
 
     const newUser = await user.create({
@@ -49,10 +53,14 @@ router.post("/login",async(req, res) => {
 });
 
 router.patch("/password", tokenVerificationMiddleware, async(req, res) => {
-    const { password } = req.body;
+    const { Npassword , confirm_Npassword } = req.body;
+
+    if(Npassword != confirm_Npassword){
+        return res.status(400).json({ massage: "New password is not the same!!!"});
+    }
 
     await user.update({
-        password: password
+        password: Npassword
     }, {
         where: {
             id: req.user.id,

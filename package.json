@@ -17,6 +17,7 @@
     "jsonwebtoken": "^8.5.1",
     "mysql2": "^2.3.3",
     "sequelize": "^6.21.2",
+    "sqlite": "^4.1.1",
     "sqlite3": "^5.0.8"
   }
 }
