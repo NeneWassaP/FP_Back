@@ -8,6 +8,21 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             allowNull: false,
         },
+        A1 : {
+            type: DataTypes.STRING,
+            allowNull: false,
+            defaultValue: "zen"
+        },
+        A2 : {
+            type: DataTypes.STRING,
+            allowNull: false,
+            defaultValue: "zen"
+        },
+        A3 : {
+            type: DataTypes.STRING,
+            allowNull: false,
+            defaultValue: "zen"
+        },
     }, {
        freezeTableName: true 
     });
@@ -17,6 +32,7 @@ module.exports = (sequelize, DataTypes) => {
         word.belongsTo(models.unit,{
             foreignKey: "unit_id",
         });
+
     };
 
     return word;
