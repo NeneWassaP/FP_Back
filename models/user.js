@@ -12,5 +12,11 @@ module.exports = (sequelize, DataTypes) => {
        freezeTableName: true 
     });
 
+    user.associate = (models) =>{
+        user.hasMany(models.track,{
+             foreignKey: "user_id",
+         });
+     };
+
     return user;
 }

@@ -2,7 +2,7 @@
   "development": {
     "username": "root",
     "password": "Password",
-    "database": "Test",
+    "database": "thai_sign",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },

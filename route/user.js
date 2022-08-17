@@ -6,7 +6,7 @@ const { user } = require('./../models');
 const { tokenVerificationMiddleware } = require('./../middleware');
 
 router.post("/register", async (req,res) => {
-    const { username, password, check_password } = req.body;
+    const { username, password, confirm_password } = req.body;
 
     const exist = await user.findOne({
         where: {
@@ -15,11 +15,11 @@ router.post("/register", async (req,res) => {
     });
 
     if(exist){
-        return res.status(400).json({ massage: "this username already exist!!!"});
+        return res.status(400).json({ message: "this username already exist!!!"});
     }
 
     if(password != confirm_password){
-        return res.status(400).json({ massage: "password is not the same!!!"});
+        return res.status(400).json({ message: "password is not the same!!!"});
     }
 
     const newUser = await user.create({
@@ -41,11 +41,11 @@ router.post("/login",async(req, res) => {
     });
 
     if(!exist){
-        return res.status(400).json({ massage: "user is not exist"});
+        return res.status(400).json({ message: "user is not exist"});
     }
 
     if(password != exist.password){
-        return res.status(400).json({ massage: "password or username incorrect"});
+        return res.status(400).json({ message: "password or username incorrect"});
     }
 
     const token = jwt.sign({ id: exist.id }, "konginwza", {expiresIn: "7d" });
@@ -56,7 +56,7 @@ router.patch("/password", tokenVerificationMiddleware, async(req, res) => {
     const { Npassword , confirm_Npassword } = req.body;
 
     if(Npassword != confirm_Npassword){
-        return res.status(400).json({ massage: "New password is not the same!!!"});
+        return res.status(400).json({ message: "New password is not the same!!!"});
     }
 
     await user.update({
