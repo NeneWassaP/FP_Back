@@ -32,6 +32,9 @@ module.exports = (sequelize, DataTypes) => {
         word.belongsTo(models.unit,{
             foreignKey: "unit_id",
         });
+        word.hasMany(models.answer,{
+            foreignKey: "word_id",
+        });
 
     };
 

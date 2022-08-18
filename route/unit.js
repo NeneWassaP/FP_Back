@@ -12,7 +12,7 @@ router.post("/add", async (req,res) => {
 });
 
 router.post("/add/word", async (req,res) => {
-    const { unit_id, new_word } = req.body;
+    const { unit_id, new_word, word_A1, word_A2, word_A3 } = req.body;
 
     let exist = await unit.findOne({
         where: {
@@ -38,6 +38,9 @@ router.post("/add/word", async (req,res) => {
     await word.create ({
         unit_id,
         word: new_word,
+        A1 : word_A1,
+        A2 : word_A2,
+        A3 : word_A3,
     });
 
     res.json({ massage: "success" });
@@ -97,36 +100,5 @@ router.get("/word", tokenVerificationMiddleware, async (req,res) => {
 
     res.json({word: result})
 });
-
-/*router.post("/question", tokenVerificationMiddleware, async (req,res) => {
-   
-    const { unit } = req.body;
-    const Qnum = [];
-    let num;
-    for(let i=0; i<3 ; i++){
-        do{
-            num = Math.floor(Math.random()*6)+(6*(unit-1))+1;
-        }while(Qnum.includes(num))
-        Qnum.push(num);       
-    }
-    
-    let result = await word.findAll({
-        where: {
-            id: {
-                [Op.in]: Qnum
-            }
-        }
-    });
-
-    result = result.map(element => {
-        return {
-            id: element.id,
-            choice: [element.word, element.A1, element.A2, element.A3].sort(() => Math.random() - 0.5),
-        };
-    })
-    
-    res.json({question: result})
-});
-*/
 
 module.exports = router;

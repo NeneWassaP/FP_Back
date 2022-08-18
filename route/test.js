@@ -1,12 +1,23 @@
 const express = require('express');
 const router = express.Router();
 
-const { word } = require('./../models');
+const { user ,word, track, answer } = require('./../models');
 const { tokenVerificationMiddleware } = require('./../middleware');
 const { Op } = require('sequelize');
 
 router.post("/question", tokenVerificationMiddleware, async (req,res) => {
     const { unit } = req.body;
+    const check = await track.findOne({
+        attributes: ["unit_id"],
+        where: {
+            user_id: req.user.id,
+        },
+    });
+    
+    if(unit>check.unit_id){
+        return res.status(400).json({ message: "This unit isn't unlocked!!"});
+    }
+
     const Qnum = [];
     let num;
     for(let i=0; i<3 ; i++){
@@ -32,6 +43,46 @@ router.post("/question", tokenVerificationMiddleware, async (req,res) => {
     })
     
     res.json({question: result})
+});
+
+router.post("/answer",tokenVerificationMiddleware ,async (req,res) => {
+
+    const { word_id , ans } = req.body;
+    const selected_word = await word.findOne({
+        attributes: ["unit_id","word"],
+        where: {
+            id: word_id,
+        },
+    });
+
+    const is_correct = selected_word.word == ans;
+    await answer.create({
+        user_id: req.user.id,
+        unit_id: selected_word.unit_id,
+        word_id,
+        is_correct,
+    });
+
+    res.json({ is_correct })
+    
+});
+
+router.get("/all" ,async (req,res) => {
+    
+    const result = await user.findAll({
+        attributes: ["id"],
+        include: {
+            model: answer,
+            attributes: ["unit_id","word_id","is_correct"],
+        },
+        order: [
+            ["id","asc"],
+            [answer, "unit_id", "asc"],
+        ],
+    });
+
+    res.json({ result })
+    
 });
 
 module.exports = router;

@@ -15,7 +15,11 @@ module.exports = (sequelize, DataTypes) => {
     user.associate = (models) =>{
         user.hasMany(models.track,{
              foreignKey: "user_id",
-         });
+        });
+        user.hasMany(models.answer,{
+            foreignKey: "user_id",
+        });
+         
      };
 
     return user;
