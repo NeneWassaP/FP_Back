@@ -1,16 +1,33 @@
 const express = require('express');
 const router = express.Router();
 const {spawn} = require('child_process');
-const multer  = require('multer')
-const upload = multer({ dest: './collect' })
+const multer  = require('multer');
+const upload = multer({ dest: './collect' });
+const fs = require('fs');
+const path = require('path');
+
+if (!fs.existsSync("./collect")){
+    fs.mkdirSync("./collect");
+}
+
+fs.readdir("./collect", (err, files) => {
+    if (err) throw err;
+  
+    for (const file of files) {
+      fs.unlink(path.join("./collect", file), err => {
+        if (err) throw err;
+      });
+    }
+  });
 
 //const holistic = require('@mediapipe/holistic/holistic');
 
 //console.log(holistic.Solution())
 
 
-router.post('/predict',upload.single('uploaded_file'), (req, res) => {
-    console.log(req.file, req.body)
+router.post('/predict',upload.single('image'), (req, res) => {
+    console.log(req.file, req.body);
+    return res.json({ message: "success" });
 })
 
 /*{
