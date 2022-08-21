@@ -15,7 +15,7 @@ router.post("/question", tokenVerificationMiddleware, async (req,res) => {
     });
     
     if(unit>check.unit_id){
-        return res.status(400).json({ message: "This unit isn't unlocked!!"});
+        return res.status(403).json({ message: "This unit isn't unlocked!!"});
     }
 
     const Qnum = [];
