@@ -21,6 +21,7 @@ app.use("/user",require("./route/user"));
 app.use("/unit",require("./route/unit"));
 app.use("/test",require("./route/test"));
 app.use("/quiz",require("./route/quiz"));
+app.use("/mediapipe",require("./mediapipe/predict"));
 
 db.sequelize.sync().then((req) => {
     app.listen(PORT, () => console.log(`Backend started on port ${PORT}`))
