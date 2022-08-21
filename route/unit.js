@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
 
-const { track , unit, word } = require('./../models');
+const { track , unit, word, answer } = require('./../models');
 const { tokenVerificationMiddleware } = require('./../middleware');
-const { Op } = require('sequelize');
+const { Op, where } = require('sequelize');
 
 router.post("/add", async (req,res) => {
     await unit.create ();
@@ -73,21 +73,36 @@ router.patch("/track", tokenVerificationMiddleware, async (req,res) => {
 
 });
 
-router.get("/word", async (req,res) => {
+router.get("/track", tokenVerificationMiddleware, async (req,res) => {
+
+    const last_unit = await track.findOne({
+        attributes: ["unit_id"],
+        where: {
+            user_id: req.user.id,
+        },
+    });
+
+    if (!last_unit) {
+        return res.json({ unit: 1});
+    }
+
+    if (await answer.findOne({ where: { user_id: req.user.id, unit_id: last_unit } })) {
+        last_unit.unit_id += 1;
+    }
+
+    return res.json({ unit: last_unit.unit_id});
+
+});
+
+router.post("/word", async (req,res) => {
 
     const { unit_id } = req.body;
 
-    const result = await unit.findAll({
-        attributes: ["id"],
-        include: {
-            model: word,
-            attributes: ["word"],
-        },
-        order: [
-            [word, "id", "asc"],
-        ],
+    const result = await word.findAll({
+        attributes: ["id", "word"],
+        order: [["id", "asc"]],
         where: {
-            id: unit_id
+            unit_id: unit_id
         },
     });
 

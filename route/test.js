@@ -14,7 +14,7 @@ router.post("/question", tokenVerificationMiddleware, async (req,res) => {
         },
     });
     
-    if(unit>check.unit_id){
+    if(unit>(check||{unit_id:1}).unit_id){
         return res.status(403).json({ message: "This unit isn't unlocked!!"});
     }
 
@@ -24,7 +24,7 @@ router.post("/question", tokenVerificationMiddleware, async (req,res) => {
         do{
             num = Math.floor(Math.random()*6)+(6*(unit-1))+1;
         }while(Qnum.includes(num))
-        Qnum.push(num);       
+        Qnum.push(num);
     }
     
     let result = await word.findAll({
@@ -63,7 +63,7 @@ router.post("/answer",tokenVerificationMiddleware ,async (req,res) => {
         is_correct,
     });
 
-    res.json({ is_correct })
+    res.json({ is_correct, correct: selected_word.word })
     
 });
 
