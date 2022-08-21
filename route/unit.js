@@ -73,6 +73,23 @@ router.patch("/track", tokenVerificationMiddleware, async (req,res) => {
 
 });
 
+router.get("/track", tokenVerificationMiddleware, async (req,res) => {
+
+    const unit = await track.findOne({
+        attributes: ["unit_id"],
+        where: {
+            user_id: req.user.id,
+        },
+    });
+
+    if(!unit){
+        return res.json({unit: 1});
+    }
+
+    return res.json({unit: unit.unit_id});
+
+});
+
 router.get("/word", async (req,res) => {
 
     const { unit_id } = req.body;
