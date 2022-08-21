@@ -26,6 +26,10 @@ fs.readdir("./collect", (err, files) => {
     }
 });
 
+if (!fs.existsSync("./landmark")){
+    fs.mkdirSync("./landmark");
+}
+
 fs.readdir("./landmark", (err, files) => {
     if (err) throw err;
 
