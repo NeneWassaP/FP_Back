@@ -73,7 +73,28 @@ router.patch("/track", tokenVerificationMiddleware, async (req,res) => {
 
 });
 
-router.get("/word", tokenVerificationMiddleware, async (req,res) => {
+router.get("/word", async (req,res) => {
+
+    const { unit_id } = req.body;
+
+    const result = await unit.findAll({
+        attributes: ["id"],
+        include: {
+            model: word,
+            attributes: ["word"],
+        },
+        order: [
+            [word, "id", "asc"],
+        ],
+        where: {
+            id: unit_id
+        },
+    });
+
+    res.json({word: result})
+});
+
+router.get("/words", tokenVerificationMiddleware, async (req,res) => {
 
     const unitid = await track.findOne({
         attributes: ["unit_id"],
