@@ -40,6 +40,8 @@ bower_components
 
 # IDE - VSCode
 .vscode/*
+collect/*
+landmark/*
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json

@@ -3,7 +3,7 @@ const router = express.Router();
 
 const { track , unit, word, answer } = require('./../models');
 const { tokenVerificationMiddleware } = require('./../middleware');
-const { Op, where } = require('sequelize');
+const { Op } = require('sequelize');
 
 router.post("/add", async (req,res) => {
     await unit.create ();
@@ -95,6 +95,15 @@ router.get("/track", tokenVerificationMiddleware, async (req,res) => {
 });
 
 router.post("/word", async (req,res) => {
+    if(!unit){
+        return res.json({unit: 1});
+    }
+
+    return res.json({unit: unit.unit_id});
+
+});
+
+router.get("/word", async (req,res) => {
 
     const { unit_id } = req.body;
 
