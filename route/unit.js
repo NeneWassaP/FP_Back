@@ -53,7 +53,7 @@ router.patch("/track", tokenVerificationMiddleware, async (req,res) => {
     const last_unit = await track.findOne({
         attributes: ["id", "unit_id"],
         where: {
-            id: req.user.id,
+            user_id: req.user.id,
         },
     });
 
