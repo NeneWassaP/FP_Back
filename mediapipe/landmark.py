@@ -62,10 +62,12 @@ def python():
         frame =  cv2.imread(file+output["file_name"])
         image,results = mediapipe_detection(frame, holistic)
         draw_landmarks(image, results)
+   
     pose = []
     for res in results.pose_landmarks.landmark:
         test = np.array([res.x, res.y, res.z, res.visibility])
         pose.append(test)
+
     result_test = extract_keypoints(results)
     np.save('landmark/'+ output["file_name"] , result_test)
 
@@ -87,7 +89,7 @@ def python():
                                 sentence.append(actions[np.argmax(res)])
                         else:
                             sentence.append(actions[np.argmax(res)])
-        return actions[np.argmax(res)]
+                        return actions[np.argmax(res)]
 
     return "success"
 

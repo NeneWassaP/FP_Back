@@ -10,8 +10,6 @@ const { tokenVerificationMiddleware } = require('./../middleware');
 const { Op } = require('sequelize');
 const axios = require('axios');
 
-
-
 if (!fs.existsSync("./collect")){
     fs.mkdirSync("./collect");
 }
@@ -49,7 +47,6 @@ collect.destroy({
 });
 
 //const holistic = require('@mediapipe/holistic/holistic');
-
 //console.log(holistic.Solution())
 
 router.post("/question", tokenVerificationMiddleware, async (req,res) => {
@@ -110,10 +107,14 @@ router.post('/predict',[tokenVerificationMiddleware,upload.single('image')],asyn
     })).map(e => e.file_name)
     
     count.reverse();
+    let response;
+    try{
+        response = await axios.post("http://localhost:3001/python", { file_name: req.file.filename, count });
+    }catch(err){
+        console.log(err)
+    }
 
-    const response = await axios.post("http://localhost:3001/python", { file_name: req.file.filename, count });
-    
-    //return res.json({ message : response.data });
+    //return res.json({ message : response});
 
     const check = await word.findOne({
         attributes: ['word'],
@@ -124,7 +125,7 @@ router.post('/predict',[tokenVerificationMiddleware,upload.single('image')],asyn
 
     const is_correct = check.word == response.data;
     
-    res.json({ is_correct: is_correct , word: check.word })
+    res.json({ is_correct: is_correct , word: response.data })
 
 })
  
