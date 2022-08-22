@@ -60,7 +60,7 @@ router.patch("/track", tokenVerificationMiddleware, async (req,res) => {
     if(!last_unit){
         await track.create({
             user_id: req.user.id,
-            unit_id: now_unit,
+            unit_id: 1,
         });
         return res.json({ message: "new save"});
     }
@@ -86,7 +86,7 @@ router.get("/track", tokenVerificationMiddleware, async (req,res) => {
         return res.json({ unit: 1});
     }
 
-    if (await answer.findOne({ where: { user_id: req.user.id, unit_id: last_unit } })) {
+    if (await answer.findOne({ where: { user_id: req.user.id, unit_id: last_unit.unit_id } })) {
         last_unit.unit_id += 1;
     }
 
@@ -95,15 +95,6 @@ router.get("/track", tokenVerificationMiddleware, async (req,res) => {
 });
 
 router.post("/word", async (req,res) => {
-    if(!unit){
-        return res.json({unit: 1});
-    }
-
-    return res.json({unit: unit.unit_id});
-
-});
-
-router.get("/word", async (req,res) => {
 
     const { unit_id } = req.body;
 
