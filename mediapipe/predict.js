@@ -61,7 +61,10 @@ router.post("/question", tokenVerificationMiddleware, async (req,res) => {
         },
     });
     
-    if(!check||unit>check.unit_id){
+    if (!check && unit > 1) {
+        return res.status(403).json({ message: "This unit isn't unlocked!!"});
+    }
+    if(unit>check.unit_id){
         return res.status(403).json({ message: "This unit isn't unlocked!!"});
     }
 
@@ -119,7 +122,7 @@ router.post('/predict',[tokenVerificationMiddleware,upload.single('image')],asyn
         },
     });
 
-    is_correct = check.word == response;
+    const is_correct = check.word == response.data;
     
     res.json({ is_correct })
 

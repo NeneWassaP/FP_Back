@@ -17,7 +17,6 @@ router.post("/question", tokenVerificationMiddleware, async (req,res) => {
     if (!check && unit > 1) {
         return res.status(403).json({ message: "This unit isn't unlocked!!"});
     }
-    console.log(unit, check.unit_id);
     if(unit>check.unit_id){
         return res.status(403).json({ message: "This unit isn't unlocked!!"});
     }
