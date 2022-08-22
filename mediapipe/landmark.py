@@ -36,7 +36,7 @@ def draw_landmarks(image, results):
     mp_drawing.draw_landmarks(image, results.left_hand_landmarks, mp_holistic.HAND_CONNECTIONS) #draw left hand connection
     mp_drawing.draw_landmarks(image, results.right_hand_landmarks, mp_holistic.HAND_CONNECTIONS) #draw right hand connection
 
-actions = np.array(['1_Hello','2_Name','3_Lastname','4_Age','5_ThankYou','6_Sorry','7_Who','8_What','9_Why','10_HowMuch','11_Where','12_How','13_Dad','14_Mom','15_OSis','16_YSis','17_Son','18_GChild','19_Man','20_I','21_You','22_Woman', '23_Child', '24_They'])
+actions = np.array(['สวัสดี','ชื่อ','นามสกุล','อายุ','ขอบคุณ','ขอโทษ','ใคร','อะไร','ทำไม','เท่าไหร่','ไหน','อย่างไร','พ่อ','แม่','พี่','น้อง','ลูก','หลาน','ผู้ชาย','ฉัน','เธอ','ผู้หญิง', 'เด็ก', 'เขา'])
 no_sequences = 30
 sequence_length = 30
 label_map = {label:num for num, label in enumerate(actions)}

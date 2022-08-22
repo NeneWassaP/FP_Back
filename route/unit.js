@@ -114,7 +114,7 @@ router.get("/words", tokenVerificationMiddleware, async (req,res) => {
     const unitid = await track.findOne({
         attributes: ["unit_id"],
         where: {
-            id: req.user.id,
+            user_id: req.user.id,
         },
     });
 
