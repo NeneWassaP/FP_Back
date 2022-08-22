@@ -124,7 +124,7 @@ router.post('/predict',[tokenVerificationMiddleware,upload.single('image')],asyn
 
     const is_correct = check.word == response.data;
     
-    res.json({ is_correct })
+    res.json({ is_correct: is_correct , word: check.word })
 
 })
  
