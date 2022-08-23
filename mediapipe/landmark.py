@@ -1,5 +1,6 @@
 import json
 from sys import set_asyncgen_hooks
+from unittest import result
 from flask import request
 from flask import Flask, render_template
 app = Flask(__name__)
@@ -63,10 +64,15 @@ def python():
         image,results = mediapipe_detection(frame, holistic)
         draw_landmarks(image, results)
    
-    pose = []
-    for res in results.pose_landmarks.landmark:
-        test = np.array([res.x, res.y, res.z, res.visibility])
-        pose.append(test)
+    try :
+        pose = []
+        for res in results.pose_landmarks.landmark:
+            test = np.array([res.x, res.y, res.z, res.visibility])
+            pose.append(test)
+    except :
+        result_test = np.zeros(258)
+        np.save('landmark/'+ output["file_name"] , result_test)
+        return "waiting"
 
     result_test = extract_keypoints(results)
     np.save('landmark/'+ output["file_name"] , result_test)
@@ -91,6 +97,6 @@ def python():
                             sentence.append(actions[np.argmax(res)])
                         return actions[np.argmax(res)]
 
-    return "success"
+    return "waiting"
 
 app.run(host="localhost", port=3001)

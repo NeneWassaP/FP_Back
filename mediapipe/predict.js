@@ -91,7 +91,7 @@ router.post('/predict',[tokenVerificationMiddleware,upload.single('image')],asyn
     const { word_id } = req.body;
 
     await collect.create({
-        user_id: 1,
+        user_id: req.user.id,
         file_name: req.file.filename
     });
 
