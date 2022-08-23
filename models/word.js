@@ -23,6 +23,9 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false,
             defaultValue: "zen"
         },
+    },{
+        charset : 'utf8',
+        collate : 'utf8_unicode_ci'
     }, {
        freezeTableName: true 
     });
