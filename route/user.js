@@ -49,7 +49,7 @@ router.post("/login",async(req, res) => {
     }
 
     const token = jwt.sign({ id: exist.id }, "konginwza", {expiresIn: "7d" });
-    return res.json({ token: token });
+    return res.json({ token: token , username: username });
 });
 
 router.patch("/password", tokenVerificationMiddleware, async(req, res) => {
