@@ -9,6 +9,7 @@ const { user, word , track ,collect } = require('./../models');
 const { tokenVerificationMiddleware } = require('./../middleware');
 const { Op } = require('sequelize');
 const axios = require('axios');
+const { execPath } = require('process');
 
 if (!fs.existsSync("./collect")){
     fs.mkdirSync("./collect");
@@ -123,9 +124,20 @@ router.post('/predict',[tokenVerificationMiddleware,upload.single('image')],asyn
         },
     });
 
-    const is_correct = check.word == response.data;
+    try{
+        const is_correct = check.word == response.data;
+        res.json({ is_correct: is_correct , word: response.data })
+    }catch(err){
+        collect.destroy({
+            where: {
+                user_id: req.user.id,
+            },
+        });
+        res.status(400).json({ message: "error please try again!"});
+
+    }
     
-    res.json({ is_correct: is_correct , word: response.data })
+    //res.json({ is_correct: is_correct , word: response.data })
 
 })
  
