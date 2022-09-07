@@ -48,7 +48,7 @@ model.add(LSTM(64, return_sequences=False, activation='relu'))
 model.add(Dense(64, activation='relu'))
 model.add(Dense(32, activation='relu'))
 model.add(Dense(actions.shape[0], activation='softmax'))
-model.load_weights('action.h5')
+model.load_weights('action2.h5')
 
 from scipy import stats
 
